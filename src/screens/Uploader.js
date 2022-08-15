@@ -44,22 +44,36 @@ function Uploader() {
   }  
 
   async function upload() {
-    setUploadStatus('Uploading...')
     console.log(fileInput.current.files[0])
+    if (fileInput.current.files.length === 0) {
+      alert('Select a file to upload')
+      return
+    }
     const fileName = fileInput.current.files[0].name;
+    setUploadStatus('Uploading...')
     const cid = await storeWithProgress(fileInput.current.files)
     // bafybeih5o5j3dbti5q5mbkiprkd2qvqtowazfhnv4cube6h4iqbd4szgyq.ipfs.dweb.link
     const url = `https://${cid}.ipfs.dweb.link/${fileName}`;
     setFileLink(url)
     setUploadStatus('Uploaded')
-    navigator.share(url)
+    
+    if (navigator.share) {
+      navigator.share({
+        title: 'Share: ' + fileName,
+        text: 'Share file without losing quality',
+        url: url,
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => alert('Error sharing', error));
+    }
   }
 
   return (
     <div className="Uploader">
-      <input type="file" ref={fileInput} />
+      <h2>Web3 Share</h2>
+      <input type="file" ref={fileInput}/>
       <button onClick={upload}>Upload</button>
-      <a href={fileLink}>{fileLink}</a>
+      {fileLink && <a href={fileLink}>Generated link</a>}
       {uploadStatus}
     </div>
   );
