@@ -56,12 +56,14 @@ function Uploader() {
     const url = `https://${cid}.ipfs.dweb.link/${fileName}`;
     setFileLink(url)
     setUploadStatus('Uploaded')
-    
+  }
+
+  const shareLink = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Share: ' + fileName,
+        title: 'Share file via w3',
         text: 'Share file without losing quality',
-        url: url,
+        url: fileLink,
       })
         .then(() => console.log('Successful share'))
         .catch((error) => alert('Error sharing', error));
@@ -73,6 +75,7 @@ function Uploader() {
       <h2>Web3 Share</h2>
       <input type="file" ref={fileInput}/>
       <button onClick={upload}>Upload</button>
+      <button onClick={shareLink}>Share</button>
       {fileLink && <a href={fileLink}>Generated link</a>}
       {uploadStatus}
     </div>
