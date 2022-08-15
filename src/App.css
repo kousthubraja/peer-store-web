@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.Uploader {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  padding: 20px;
+  justify-content: space-around;
+  text-align: center;
+  align-items: center;
+  /* background-color: #282c34; */
+  height: 200px;
+}
