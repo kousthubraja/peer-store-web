@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react'
 
 function Uploader() {
   const fileInput = useRef();
+  const [fileName, setFileName] = useState();
   const [fileLink, setFileLink] = useState();
   const [uploadStatus, setUploadStatus] = useState();
 
@@ -55,19 +56,26 @@ function Uploader() {
     // bafybeih5o5j3dbti5q5mbkiprkd2qvqtowazfhnv4cube6h4iqbd4szgyq.ipfs.dweb.link
     const url = `https://${cid}.ipfs.dweb.link/${fileName}`;
     setFileLink(url)
+    setFileName(fileName)
     setUploadStatus('Uploaded')
   }
 
   const shareLink = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Share file via w3',
-        text: 'Share file without losing quality',
+        title: 'Share: ' + fileName,
+        text: 'Share: ' + fileName,
         url: fileLink,
       })
         .then(() => console.log('Successful share'))
         .catch((error) => alert('Error sharing', error));
     }
+  }
+  
+  const whatsappLink = () => {
+    const url = 'https://api.whatsapp.com/send?text=' + fileLink;
+    console.log(url)
+    window.open(url)
   }
 
   return (
@@ -76,6 +84,7 @@ function Uploader() {
       <input type="file" ref={fileInput}/>
       <button onClick={upload}>Upload</button>
       <button onClick={shareLink}>Share</button>
+      <button onClick={whatsappLink}>Whatsapp</button>
       {fileLink && <a href={fileLink}>Generated link</a>}
       {uploadStatus}
     </div>
