@@ -44,13 +44,15 @@ function Uploader() {
   }  
 
   async function upload() {
-    setUploadStatus('Uploading')
+    setUploadStatus('Uploading...')
     console.log(fileInput.current.files[0])
     const fileName = fileInput.current.files[0].name;
     const cid = await storeWithProgress(fileInput.current.files)
     // bafybeih5o5j3dbti5q5mbkiprkd2qvqtowazfhnv4cube6h4iqbd4szgyq.ipfs.dweb.link
     const url = `https://${cid}.ipfs.dweb.link/${fileName}`;
     setFileLink(url)
+    setUploadStatus('Uploaded')
+    navigator.share(url)
   }
 
   return (
